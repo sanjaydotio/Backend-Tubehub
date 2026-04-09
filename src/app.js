@@ -10,5 +10,15 @@ app.use(express.urlencoded({extended: true, limit: JSONLIMIT}))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(cookieParser())
 
+/**
+ * Require Routes
+ */
+const userRouter = require('./routes/user.route')
+
+/**
+ * Use Routes
+ */
+app.use("/api/v1/users", userRouter)
+
 
 module.exports = app;

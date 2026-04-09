@@ -33,7 +33,6 @@ const userSchema = new mongoose.Schema({
     },
     coverImage: {
         type: String,
-        required: [true, 'Cover image is required'],
         trim: true,
     },
     watchHistory: [{
@@ -54,11 +53,10 @@ userSchema.pre('save', async function (next) {
     if (!this.isModified("password")) return next()
 
         this.password = await bcrypt.hash(this.password , 12)
-         next()
 })
 
 userSchema.methods.isPasswordValid = async function(password) {
-    return bcrypt.compare(password , this.password)
+    return await bcrypt.compare(password , this.password)
 }
 
 userSchema.methods.generateAccessToken = function () {
