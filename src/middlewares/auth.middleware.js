@@ -3,7 +3,7 @@ const asyncHandler = require("../utils/asyncHandler");
 const jwt = require('jsonwebtoken')
 const userModel = require('../models/user.model')
 
-const isLoggedin = asyncHandler(async (req,_,next) => {
+const isLoggedin = asyncHandler(async (req,res,next) => {
     try {
         const token = req.cookies?.accessToken || req?.header("Authorization")?.replace("Bearer", "")
     

@@ -9,7 +9,7 @@ const userController = require('../controller/user.controller')
 */
 
 const uploadFile = require('../middlewares/multer.middleware')
-const authController = require('../middlewares/auth.middleware')
+const authMiddleware = require('../middlewares/auth.middleware')
 
 
 /**
@@ -20,6 +20,10 @@ router.post("/login", userController.loginApi)
 
 
 // Secure Route
-router.post("/logout", authController.isLoggedin,  userController.logoutApi)
+router.post("/logout", authMiddleware.isLoggedin,  userController.logoutApi)
+router.post("/refreshAccessToken", userController.refreshAccessToken)
+router.post("/changePassword", authMiddleware.isLoggedin , userController.changeCurrentPassword)
+router.post("/getCurrentUser", authMiddleware.isLoggedin , userController.getCurrentUser)
+router.post("/updateUserDetails", authMiddleware.isLoggedin , userController.updateUserDetails)
 
 module.exports = router
