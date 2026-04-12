@@ -25,5 +25,7 @@ router.post("/refreshAccessToken", userController.refreshAccessToken)
 router.post("/changePassword", authMiddleware.isLoggedin , userController.changeCurrentPassword)
 router.post("/getCurrentUser", authMiddleware.isLoggedin , userController.getCurrentUser)
 router.post("/updateUserDetails", authMiddleware.isLoggedin , userController.updateUserDetails)
+router.post("/updateAvatarImage", authMiddleware.isLoggedin, uploadFile.single("avatar") ,userController.updateAvatarImage)
+router.post("/updateCoverImage", authMiddleware.isLoggedin, uploadFile.single("coverImage"), userController.uploadCoverImage)
 
 module.exports = router

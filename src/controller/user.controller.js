@@ -209,4 +209,66 @@ const updateUserDetails = asyncHandler(async (req,res) => {
 
 })
 
-module.exports = {resisterApi , loginApi , logoutApi , refreshAccessToken , changeCurrentPassword , getCurrentUser , updateUserDetails}
+const updateAvatarImage = asyncHandler(async (req,res) => {
+    const localAvatarpath = req.file?.path
+
+    if (!localAvatarpath) {
+        throw new ApiError(400, "Avatar image is missing")
+    }
+
+    const avatar = await uploadOnCloudinary(localAvatarpath)
+
+    if (!avatar?.url){
+        throw new ApiError(409, "problem with uploading a avatar image")
+    }
+
+    const user = await userModel.findByIdAndUpdate(req.user?._id, 
+        {$set: {
+            avatar: avatar.url
+        }},
+        {new: true}
+    ).select("-password")
+
+    res.status(200)
+    .json( new ApiResponse(200, user , "Avatar image updated successfullt"))
+
+})
+
+const uploadCoverImage = asyncHandler(async (req,res) => {
+    const localCoverImagepath  = req.file?.path
+
+    if (!localCoverImagepath){
+        throw new ApiError(401, "file is missing")
+    }
+
+    const coverImage = await uploadOnCloudinary(localCoverImagepath)
+
+    if (!coverImage.url){
+        throw new ApiError(409, "Upload Processing failed")
+    }
+
+    const user = await userModel.findByIdAndUpdate(req.user?._id, 
+        {
+            $set: {
+                coverImage: coverImage.url
+            }
+        },
+          {new: true}
+    ).select("-Password")
+
+    res.status(200)
+    .json(new ApiResponse(200, user , "Cover Image Updated Successfully"))
+
+})
+
+module.exports = {
+    resisterApi,
+    loginApi ,
+    logoutApi ,
+    refreshAccessToken   ,
+    changeCurrentPassword ,
+    getCurrentUser ,
+    updateUserDetails,    
+    updateAvatarImage,
+    uploadCoverImage
+}
