@@ -24,8 +24,11 @@ router.post("/logout", authMiddleware.isLoggedin,  userController.logoutApi)
 router.post("/refreshAccessToken", userController.refreshAccessToken)
 router.post("/changePassword", authMiddleware.isLoggedin , userController.changeCurrentPassword)
 router.post("/getCurrentUser", authMiddleware.isLoggedin , userController.getCurrentUser)
-router.post("/updateUserDetails", authMiddleware.isLoggedin , userController.updateUserDetails)
-router.post("/updateAvatarImage", authMiddleware.isLoggedin, uploadFile.single("avatar") ,userController.updateAvatarImage)
-router.post("/updateCoverImage", authMiddleware.isLoggedin, uploadFile.single("coverImage"), userController.uploadCoverImage)
+router.patch("/updateUserDetails", authMiddleware.isLoggedin , userController.updateUserDetails)
+router.patch("/updateAvatarImage", authMiddleware.isLoggedin, uploadFile.single("avatar") ,userController.updateAvatarImage)
+router.patch("/updateCoverImage", authMiddleware.isLoggedin, uploadFile.single("coverImage"), userController.uploadCoverImage)
+router.get("/channel/:username", authMiddleware.isLoggedin, userController.getUserChannelProfile)
+router.get("/history", authMiddleware.isLoggedin , userController.getWatchHistory)
+
 
 module.exports = router
